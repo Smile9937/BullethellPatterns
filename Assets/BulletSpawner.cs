@@ -14,6 +14,7 @@ public class BulletSpawner : MonoBehaviour
     public float bulletLifespan = 5;
     public bool randomColor;
     public Color bulletColor;
+    public Color[] colorList;
 
     private int angleIndex;
 
@@ -21,7 +22,6 @@ public class BulletSpawner : MonoBehaviour
     public GameObject bullet;
     private bool notEnoughBulletsInPool = true;
     private List<GameObject> bullets = new List<GameObject>();
-
     public void StartFireBulletCourutine()
     {
         StartCoroutine(FireBullets());
