@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -290,8 +290,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1430953241}
-        m_TargetAssemblyTypeName: UnityEngine.MonoBehaviour, UnityEngine
-        m_MethodName: StopAllCoroutines
+        m_TargetAssemblyTypeName: BulletSpawner, Assembly-CSharp
+        m_MethodName: StopAttacking
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -628,17 +628,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7411ce58be6d33a49b5e4e7386c8d72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  numberOfBullets: 8
-  angleOffset: 32
-  bulletSpeed: 3
-  bulletLifespan: 3
-  randomColor: 0
-  bulletColor: {r: 1, g: 0, b: 0, a: 1}
-  colorList:
-  - {r: 0, g: 0.36858153, b: 1, a: 1}
-  - {r: 0, g: 1, b: 1, a: 1}
   bullet: {fileID: 360535765512254447, guid: a57657f3334f645409b8c5e888c14f8d, type: 3}
+  attackPatterns:
+  - {fileID: 11400000, guid: 03f2b0bb7ffbe584c99ee63655188164, type: 2}
+  - {fileID: 11400000, guid: 86d9bb44a5186614aa59c183643dbde8, type: 2}
+  - {fileID: 11400000, guid: 219d7ceb78e4fd244bc3e6a4da70f152, type: 2}
 --- !u!212 &1430953242
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -13,11 +13,14 @@ public class AttackPattern : ScriptableObject
     [Header("Edit Bullets")]
     [SerializeField] private float bulletSpeed = 3;
     [SerializeField] private float bulletLifespan = 5;
-    [SerializeField] private bool randomColor;
-    [SerializeField] private Color bulletColor;
+
+    [Header("Bullet Color")]
     [SerializeField] private Color[] colorList;
+    [SerializeField] private float timeBetweenColor;
+    [SerializeField] private bool randomColor;
 
-
+    [Header("Edit Attack Pattern")]
+    [SerializeField] private float patternLength;
 
     public float GetAttackSpeed() { return attackSpeed; }
     public float GetNumberOfBullets() { return numberOfBullets; }
@@ -25,8 +28,10 @@ public class AttackPattern : ScriptableObject
 
     public float GetBulletSpeed() { return bulletSpeed; }
     public float GetBulleLifespan() { return bulletLifespan; }
-    public bool RandomColor() { return randomColor; }
-    public Color GetBulletColor() { return bulletColor; }
+    public bool GetRandomColor() { return randomColor; }
     public Color[] GetColorList() { return colorList; }
+    public float GetTimeBetweenColor() { return timeBetweenColor; }
+
+    public float GetPatternLength() { return patternLength; }
 
 }
