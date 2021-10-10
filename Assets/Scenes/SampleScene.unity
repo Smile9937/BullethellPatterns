@@ -630,8 +630,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 360535765512254447, guid: a57657f3334f645409b8c5e888c14f8d, type: 3}
   attackPatterns:
-  - {fileID: 11400000, guid: 03f2b0bb7ffbe584c99ee63655188164, type: 2}
   - {fileID: 11400000, guid: 86d9bb44a5186614aa59c183643dbde8, type: 2}
+  - {fileID: 11400000, guid: 03f2b0bb7ffbe584c99ee63655188164, type: 2}
   - {fileID: 11400000, guid: 219d7ceb78e4fd244bc3e6a4da70f152, type: 2}
 --- !u!212 &1430953242
 SpriteRenderer:

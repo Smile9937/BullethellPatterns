@@ -17,7 +17,11 @@ MonoBehaviour:
   angleOffset: 21
   bulletSpeed: 4
   bulletLifespan: 5
+  bulletSize: 0.3
+  colorList:
+  - {r: 1, g: 0.89719844, b: 0, a: 1}
+  - {r: 1, g: 0.6039216, b: 0, a: 1}
+  - {r: 1, g: 0.21960786, b: 0, a: 1}
   randomColor: 0
-  bulletColor: {r: 0, g: 0.48795938, b: 1, a: 1}
-  colorList: []
+  timeBetweenColor: 0.5
   patternLength: 5
