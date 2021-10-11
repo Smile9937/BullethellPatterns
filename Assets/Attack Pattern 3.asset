@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cabd35ee2081ecb4097cb3873bc2371c, type: 3}
-  m_Name: Attack Pattern 1
+  m_Name: Attack Pattern 3
   m_EditorClassIdentifier: 
   attackDelay: 0.7
-  numberOfBullets: 8
-  angleOffset: -22.5
-  bulletSpeed: 3
+  numberOfBullets: 64
+  angleOffset: 21
+  bulletSpeed: 2
   bulletLifespan: 5
-  bulletSize: 2
-  bulletSprite: {fileID: 3625043607559282579, guid: 045b15ec09bba42448d89db77fa6f20a, type: 3}
+  bulletSize: 0.3
+  bulletSprite: {fileID: 0}
   colorList:
-  - {r: 0, g: 1, b: 0.21176472, a: 1}
-  - {r: 0, g: 1, b: 0.89082146, a: 1}
-  - {r: 0, g: 0.47910976, b: 1, a: 1}
+  - {r: 1, g: 0.89719844, b: 0, a: 0.69803923}
+  - {r: 1, g: 0.6039216, b: 0, a: 0.69803923}
+  - {r: 1, g: 0.21960786, b: 0, a: 0.69803923}
   randomColor: 0
-  bulletsOfColor: 8
+  bulletsOfColor: 64
   patternLength: 5
   timeUntilPatternStart: 0.5

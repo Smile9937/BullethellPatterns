@@ -10,92 +10,143 @@ public class BulletSpawner : MonoBehaviour
     private List<GameObject> bullets = new List<GameObject>();
 
     [SerializeField] private AttackPattern[] attackPatterns;
-    private int attackPatternIndex;
+    private int attackPatternIndex = 0;
 
-    private int angleIndex;
-    private int colorIndex;
+    private int angleIndex = 0;
+    private int colorIndex = 0;
 
     private bool isAttacking;
 
     private Color startBulletColor;
+    private Sprite startSprite;
 
-    #region ChangeCoroutine
-    private Coroutine currentCoroutine;
-    private void ChangeCoroutine(IEnumerator coroutine)
+    private int bulletsSpawned = 0;
+
+    private IEnumerator fireBullets;
+
+    private AttackPattern currentAttackPattern;
+
+    private void Start()
     {
-        //Replaces the instance of a coroutine with a new one
-        if(currentCoroutine != null)
-        {
-            StopCoroutine(currentCoroutine);
-        }
-        currentCoroutine = StartCoroutine(coroutine);
+        fireBullets = FireBullets();
     }
-    #endregion
-    public void StartFireBulletCourutine()
+    public void StartFiringBullets()
     {
         if(!isAttacking)
         {
             startBulletColor = bullet.GetComponent<SpriteRenderer>().color;
+            startSprite = bullet.GetComponent<SpriteRenderer>().sprite;
             attackPatternIndex = 0;
             angleIndex = 0;
             colorIndex = 0;
+            bulletsSpawned = 0;
             isAttacking = true;
-            StartCoroutine(FireBullets());
+            currentAttackPattern = attackPatterns[0];
             StartCoroutine(StartNextPattern());
-            StartCoroutine(IncreaseColorIndex());
         }
     }
     private IEnumerator FireBullets()
     {
-        yield return new WaitForSeconds(attackPatterns[attackPatternIndex].GetAttackSpeed());
         //Used for offsetting the rotation
         angleIndex++;
 
         //Even spacing for the bullet spawnpoints
-        float bulletAngle = 360 / attackPatterns[attackPatternIndex].GetNumberOfBullets();
+        float bulletAngle = 360 / currentAttackPattern.GetNumberOfBullets();
 
-        //Set the position of the bulles with correct rotation
-        for(int i = 0 ; i < attackPatterns[attackPatternIndex].GetNumberOfBullets(); i++)
+        for (int i = 0; i < currentAttackPattern.GetNumberOfBullets(); i++)
         {
-            float currentAngle = (i * bulletAngle) + (attackPatterns[attackPatternIndex].GetAngleOffset() * angleIndex);
-            Vector3 currentRotation = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, currentAngle);
+            //Set the position of the bulles with correct rotation
+            float currentAngle = (i * bulletAngle) + (currentAttackPattern.GetAngleOffset() * angleIndex);
 
+            Vector3 currentRotation = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, currentAngle);
             GameObject currentBullet = GetBullet();
+
             currentBullet.transform.position = transform.position;
             currentBullet.transform.rotation = Quaternion.Euler(currentRotation);
-            currentBullet.transform.localScale = new Vector2(attackPatterns[attackPatternIndex].GetBulletSize(), attackPatterns[attackPatternIndex].GetBulletSize());
+            currentBullet.transform.localScale = new Vector2(currentAttackPattern.GetBulletSize(), currentAttackPattern.GetBulletSize());
+
+            if(currentAttackPattern.GetBulletSprite() != null)
+            {
+                currentBullet.GetComponent<SpriteRenderer>().sprite = currentAttackPattern.GetBulletSprite();
+            } else
+            {
+                currentBullet.GetComponent<SpriteRenderer>().sprite = startSprite;
+            }
+
+            ChangeBulletColor(currentBullet);
 
             //Activate bullet
             currentBullet.SetActive(true);
 
             //Set bullet velocity
-            currentBullet.GetComponent<Rigidbody2D>().velocity = currentBullet.transform.up * attackPatterns[attackPatternIndex].GetBulletSpeed();
-
-            //Set bullet color
-            if (attackPatterns[attackPatternIndex].GetRandomColor())
-            {
-                currentBullet.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-            }
-            else if (attackPatterns[attackPatternIndex].GetColorList().Length > 0)
-            {
-                currentBullet.GetComponent<SpriteRenderer>().color = attackPatterns[attackPatternIndex].GetColorList()[colorIndex];
-            }
-            else
-            {
-                currentBullet.GetComponent<SpriteRenderer>().color = startBulletColor;
-            }
+            currentBullet.GetComponent<Rigidbody2D>().velocity = currentBullet.transform.up * currentAttackPattern.GetBulletSpeed();
 
             //Deactivate bullet
             StartCoroutine(DeactivateBullet(currentBullet));
         }
-        //Restart this courutine based on attack speed
-        StartCoroutine(FireBullets());
+        yield return new WaitForSeconds(currentAttackPattern.GetAttackDelay());
+        RestartFireBullets();
+    }
+    private void ChangeBulletColor(GameObject currentBullet)
+    {
+        if(currentAttackPattern.GetBulletsOfColor() > 0)
+        {
+            //Increases the color array index when the correct number of bullets have spawned
+            if (bulletsSpawned == currentAttackPattern.GetBulletsOfColor())
+            {
+                if (attackPatternIndex < attackPatterns.Length)
+                {
+                    if (colorIndex == currentAttackPattern.GetColorList().Length - 1)
+                    {
+                        colorIndex = 0;
+                    }
+                    else
+                    {
+                        colorIndex++;
+                    }
+                }
+                bulletsSpawned = 0;
+            }
+
+            if (bulletsSpawned < currentAttackPattern.GetBulletsOfColor())
+            {
+                bulletsSpawned++;
+            }
+        }
+
+        //Sets the color of the bullets
+        if (attackPatterns[attackPatternIndex].GetRandomColor())
+        {
+            int randomNum = Random.Range(0, currentAttackPattern.GetColorList().Length);
+            currentBullet.GetComponent<SpriteRenderer>().color = currentAttackPattern.GetColorList()[randomNum];
+        }
+        else if (currentAttackPattern.GetColorList().Length > 0)
+        {
+            currentBullet.GetComponent<SpriteRenderer>().color = currentAttackPattern.GetColorList()[colorIndex];
+        }
+
+        else
+        {
+            currentBullet.GetComponent<SpriteRenderer>().color = startBulletColor;
+            Debug.Log("Color Array Empty");
+        }
+    }
+    private void RestartFireBullets()
+    {
+        if (fireBullets != null)
+        {
+            StopCoroutine(fireBullets);
+        }
+        fireBullets = FireBullets();
+        StartCoroutine(fireBullets);
     }
     private IEnumerator DeactivateBullet(GameObject currentBullet)
     {
-        yield return new WaitForSeconds(attackPatterns[attackPatternIndex].GetBulleLifespan());
+        yield return new WaitForSeconds(currentAttackPattern.GetBulleLifespan());
         currentBullet.SetActive(false);
     }
+
+    //Get Bullet From Object Pool
     private GameObject GetBullet()
     {
         //Checks if there are bullets in the bullets array and returns one if it is active
@@ -120,42 +171,33 @@ public class BulletSpawner : MonoBehaviour
         }
         return null;
     }
-    private IEnumerator IncreaseColorIndex()
-    {
-        yield return new WaitForSeconds(attackPatterns[attackPatternIndex].GetTimeBetweenColor());
-        Debug.Log(colorIndex);
-        if (attackPatternIndex < attackPatterns.Length)
-        {
-            if (colorIndex >= attackPatterns[attackPatternIndex].GetColorList().Length-1)
-            {
-                colorIndex = 0;
-            } else
-            {
-                colorIndex++;
-            }
-             
-
-            Debug.Log("Test");
-            ChangeCoroutine(IncreaseColorIndex());
-        }
-    }
     private IEnumerator StartNextPattern()
     {
-        //Starts a new attack pattern
-        if (attackPatternIndex < attackPatterns.Length)
-        {
-            //StopCoroutine(IncreaseColorIndex());
-            colorIndex = 0;
+        StopCoroutine(fireBullets);
 
-            yield return new WaitForSeconds(attackPatterns[attackPatternIndex].GetPatternLength());
+        //Wait to start pattern
+        yield return new WaitForSeconds(currentAttackPattern.GetTimeUntilPatternStart());
 
-            attackPatternIndex++;
-            //ChangeCoroutine(IncreaseColorIndex());
-            StartCoroutine(StartNextPattern());
-        } else
+        RestartFireBullets();
+
+        //Wait until current pattern is finished
+        yield return new WaitForSeconds(currentAttackPattern.GetPatternLength());
+
+        attackPatternIndex++;
+
+        //Check if all patterns are finished
+        if (attackPatternIndex == attackPatterns.Length)
         {
             StopAttacking();
             Debug.Log("All patterns complete");
+        }
+        else
+        {
+            colorIndex = 0;
+            angleIndex = 0;
+            bulletsSpawned = 0;
+            currentAttackPattern = attackPatterns[attackPatternIndex];
+            StartCoroutine(StartNextPattern());
         }
     }
     public void StopAttacking()

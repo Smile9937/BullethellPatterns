@@ -12,16 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cabd35ee2081ecb4097cb3873bc2371c, type: 3}
   m_Name: Attack Pattern 2
   m_EditorClassIdentifier: 
-  attackSpeed: 2
-  numberOfBullets: 64
-  angleOffset: 21
-  bulletSpeed: 4
+  attackDelay: 0.1
+  numberOfBullets: 1
+  angleOffset: -42
+  bulletSpeed: 3
   bulletLifespan: 5
-  bulletSize: 0.3
+  bulletSize: 2
+  bulletSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   colorList:
-  - {r: 1, g: 0.89719844, b: 0, a: 1}
-  - {r: 1, g: 0.6039216, b: 0, a: 1}
-  - {r: 1, g: 0.21960786, b: 0, a: 1}
-  randomColor: 0
-  timeBetweenColor: 0.5
-  patternLength: 5
+  - {r: 1, g: 0.031372547, b: 0.8071721, a: 1}
+  - {r: 0.91069597, g: 0.031372547, b: 1, a: 1}
+  - {r: 0.6914196, g: 0.031372547, b: 1, a: 1}
+  randomColor: 1
+  bulletsOfColor: 10
+  patternLength: 2.5
+  timeUntilPatternStart: 0.5

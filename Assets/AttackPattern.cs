@@ -6,7 +6,7 @@ using UnityEngine;
 public class AttackPattern : ScriptableObject
 {
     [Header("Edit Spawner")]
-    [SerializeField] private float attackSpeed = 3f;
+    [SerializeField] private float attackDelay = 3f;
     [SerializeField] private float numberOfBullets = 8f;
     [SerializeField] private float angleOffset = 22.5f;
 
@@ -15,28 +15,34 @@ public class AttackPattern : ScriptableObject
     [SerializeField] private float bulletLifespan = 5f;
     [SerializeField] private float bulletSize = 0.3f;
 
-    [Header("Bullet Color")]
+    [Header("Bullet Design")]
+    [SerializeField] private Sprite bulletSprite;
     [SerializeField] private Color[] colorList;
     [SerializeField] private bool randomColor;
-    [SerializeField] private float timeBetweenColor;
-
-    [SerializeField] private int bulletsOfColor;
+    [SerializeField] private int bulletsOfColor = 0;
 
     [Header("Edit Attack Pattern")]
-    [SerializeField] private float patternLength;
+    [SerializeField] private float patternLength = 5f;
+    [SerializeField] private float timeUntilPatternStart = 0.5f;
 
-    public float GetAttackSpeed() { return attackSpeed; }
+    //Edit Spawner
+    public float GetAttackDelay() { return attackDelay; }
     public float GetNumberOfBullets() { return numberOfBullets; }
     public float GetAngleOffset() { return angleOffset; }
 
+    //Edit Bullets
     public float GetBulletSpeed() { return bulletSpeed; }
     public float GetBulleLifespan() { return bulletLifespan; }
     public float GetBulletSize() { return bulletSize; }
 
+    //Bullet Design
+    public Sprite GetBulletSprite() { return bulletSprite; }
     public Color[] GetColorList() { return colorList; }
     public bool GetRandomColor() { return randomColor; }
-    public float GetTimeBetweenColor() { return timeBetweenColor; }
     public int GetBulletsOfColor() { return bulletsOfColor; }
+
+    //Edit Attack Pattern
     public float GetPatternLength() { return patternLength; }
+    public float GetTimeUntilPatternStart() { return timeUntilPatternStart; }
 
 }
